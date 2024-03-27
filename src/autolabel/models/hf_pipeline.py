@@ -58,10 +58,12 @@ class HFPipelineLLM(BaseModel):
 
         # initialize HF pipeline
         self.tokenizer = AutoTokenizer.from_pretrained(
-            self.model_name, use_fast=False, add_prefix_space=True
+            self.model_name, use_fast=False, add_prefix_space=True,trust_remote_code=True
         )
         quantize_bits = self.model_params["quantize"]
-        model_config = AutoConfig.from_pretrained(self.model_name)
+        model_config = AutoConfig.from_pretrained(self.model_name, trust_remote_code=True)
+        '''国产大模型无法通过这个校验，这个校验在transform库底层进行了配置校验'''
+        '''
         if isinstance(model_config, tuple(MODEL_FOR_CAUSAL_LM_MAPPING)):
             AutoModel = AutoModelForCausalLM
         elif isinstance(model_config, tuple(MODEL_FOR_SEQ_TO_SEQ_CAUSAL_LM_MAPPING)):
@@ -70,7 +72,8 @@ class HFPipelineLLM(BaseModel):
             raise ValueError(
                 "model_name is neither a causal LM nor a seq2seq LM. Please check the model_name."
             )
-
+        '''
+        AutoModel = AutoModelForCausalLM
         if not torch.cuda.is_available():
             model = AutoModel.from_pretrained(self.model_name)
         elif quantize_bits == 8:

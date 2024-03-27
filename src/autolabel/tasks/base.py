@@ -26,8 +26,10 @@ logger = logging.getLogger(__name__)
 
 
 class BaseTask(ABC):
-    ZERO_SHOT_TEMPLATE = "{task_guidelines}\n\n{output_guidelines}\n\nNow I want you to label the following example:\n{current_example}"
-    FEW_SHOT_TEMPLATE = "{task_guidelines}\n\n{output_guidelines}\n\nSome examples with their output answers are provided below:\n\n{seed_examples}\n\nNow I want you to label the following example:\n{current_example}"
+    #ZERO_SHOT_TEMPLATE = "{task_guidelines}\n\n{output_guidelines}\n\nNow I want you to label the following example:\n{current_example}"
+    ZERO_SHOT_TEMPLATE = "{task_guidelines}\n\n{output_guidelines}\n\n现在我要你标注这个样本:\n{current_example}"
+    #FEW_SHOT_TEMPLATE = "{task_guidelines}\n\n{output_guidelines}\n\nSome examples with their output answers are provided below:\n\n{seed_examples}\n\nNow I want you to label the following example:\n{current_example}"
+    FEW_SHOT_TEMPLATE = "{task_guidelines}\n\n{output_guidelines}\n\n接下来给出了一些标注样本和它们已标记的结果:\n\n{seed_examples}\n\n现在我要你标注这个样本:\n{current_example}"
 
     ZERO_SHOT_TEMPLATE_REFUEL_LLM = """
     <s>[INST] <<SYS>>
